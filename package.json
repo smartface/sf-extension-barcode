@@ -1,21 +1,26 @@
 {
-  "name": "sf-extension-barcode",
-  "version": "3.0.1",
+  "name": "@smartface/extension-barcode",
+  "version": "4.0.0",
   "description": "Smartface Extension Barcode",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "repository": "https://github.com/smartface/sf-extension-barcode",
   "keywords": [
     "smartface",
     "extension",
     "barcode",
-    "javascript"
+    "javascript",
+    "typescript"
   ],
   "author": {
     "name": "Smartface",
     "email": "info@smartface.io",
     "url": "http://smartface.io"
   },
-  "license": "ISC"
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  }
 }

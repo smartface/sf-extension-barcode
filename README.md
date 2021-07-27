@@ -2,14 +2,14 @@
 [![Twitter: @Smartface_io](https://img.shields.io/badge/contact-@Smartface_io-blue.svg?style=flat)](https://twitter.com/smartface_io)
 [![License](https://img.shields.io/badge/license-MIT-green.svg?style=flat)](https://raw.githubusercontent.com/smartface/sf-extension-barcode/master/LICENSE)
 ## Installation
-Smartface Barcode Extension can be installed via npm easily from our public npm repository. The installation is pretty easy via Smartface Cloud IDE.
+Smartface Barcode Extension can be installed via npm easily from our public npm repository. Execute this command on your scripts directory:
 ```shell
-(cd ~/workspace/scripts && npm i -S sf-extension-barcode)
+npm i @smartface/extension-barcode
 ```
 ## How to use
 - Import extension with
 ```javascript
-import { BarcodeScanner } from "sf-extension-barcode";
+import { BarcodeScanner } from "@smartface/extension-barcode";
 ```
 - Create an instance of `BarcodeScanner`. Result will be handled in `onResult` callback.
 ```javascript
@@ -54,7 +54,7 @@ Barcode.FormatType.UPC_EAN_EXTENSION
 
 Barcode format can be retrieved like this.
 ```javascript
-import { BarcodeScanner } from "sf-extension-barcode";
+import { BarcodeScanner } from "@smartface/extension-barcode";
 barcodeScanner.onResult = ({ barcode }) => {
     if (barcode.format === BarcodeScanner.Format.QR_CODE) {
         console.log("This is a qr code");
