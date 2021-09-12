@@ -1,10 +1,11 @@
-# sf-extension-barcode
+# Barcode Scanner Extension
+[![NPM](https://img.shields.io/npm/v/@smartface/extension-barcode?style=flat-square)](https://www.npmjs.com/package/@smartface/extension-barcode)
 [![Twitter: @Smartface_io](https://img.shields.io/badge/contact-@Smartface_io-blue.svg?style=flat)](https://twitter.com/smartface_io)
 [![License](https://img.shields.io/badge/license-MIT-green.svg?style=flat)](https://raw.githubusercontent.com/smartface/sf-extension-barcode/master/LICENSE)
 ## Installation
 Smartface Barcode Extension can be installed via npm easily from our public npm repository. Execute this command on your scripts directory:
 ```shell
-npm i @smartface/extension-barcode
+yarn add @smartface/extension-barcode
 ```
 ## How to use
 - Import extension with
@@ -88,8 +89,6 @@ This barcode library is based on:
 - [iOS](https://github.com/TheLevelUp/ZXingObjC) implementation
 ## Need Help?
 Please [submit an issue](https://github.com/smartface/sf-extension-barcode/issues) on GitHub and provide information about your problem.
-## Support & Documentation & Useful Links
-- [Smartface Cloud Dashboard](https://cloud.smartface.io)
 ## Code of Conduct
 We are committed to making participation in this project a harassment-free experience for everyone, regardless of the level of experience, gender, gender identity and expression, sexual orientation, disability, personal appearance, body size, race, ethnicity, age, religion, or nationality.
 Please read and follow our [Code of Conduct](https://github.com/smartface/sf-extension-barcode/blob/master/CODE_OF_CONDUCT.md).
