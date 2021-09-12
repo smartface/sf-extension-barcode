@@ -32,11 +32,11 @@ interface IBarcodeScanner {
 }
 
 
-export class BarcodeScanner {
-    private _onResult?: TOnResult;
-    private _width: number;
-    private _height: number;
-    private _layout?: ViewGroup;
+export class BarcodeScanner implements IBarcodeScanner {
+    _onResult?: TOnResult;
+    _width: number;
+    _height: number;
+    _layout: ViewGroup;
     cameraStarted = false;
 
     constructor(params: IBarcodeScanner) {
@@ -231,6 +231,7 @@ export class BarcodeScanner {
         this.layout.captureDelegate = undefined;
         //@ts-ignore
         this.layout.capture = undefined;
+        //@ts-ignore
         this.layout = undefined;
     }
 

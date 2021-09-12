@@ -2,7 +2,7 @@
   "name": "@smartface/extension-barcode",
   "version": "5.0.0-rc.0",
   "description": "Smartface Extension Barcode",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
     "watch": "tsc -w",
     "build": "tsc"

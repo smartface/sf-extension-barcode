@@ -18,10 +18,14 @@ interface IBarcodeScanner {
     height: number;
 }
 
-export class BarcodeScanner {
-    private _scannerView?: View;
-    private _onResult?: TOnResult;
-    private _layout: ViewGroup;
+export class BarcodeScanner implements IBarcodeScanner {
+    _scannerView?: View;
+    _onResult?: TOnResult;
+    _width: number = 0;
+    _height: number = 0;
+    _layout: ViewGroup;
+    applyOrientationParentView = () => {}
+    cameraStarted = false;
 
     constructor(params: IBarcodeScanner) {
         if (!params.layout) {
@@ -30,6 +34,8 @@ export class BarcodeScanner {
         this._layout = params.layout;
         this._onResult = params.onResult;
     }
+    width: number = 0;
+    height: number = 0;
 
     get onResult() {
         return this._onResult;

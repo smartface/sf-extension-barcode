@@ -5,6 +5,6 @@ import System from "@smartface/native/device/system";
 import type * as BarcodeAndroid from './barcode-Android';
 import type * as BarcodeIOS from './barcode-iOS';
 
-const Barcode: typeof BarcodeAndroid & typeof BarcodeIOS = require(`./Barcode-${System.OS}`);
+const Barcode: typeof BarcodeAndroid & typeof BarcodeIOS = require(`./barcode-${System.OS}`);
 
 export = Barcode;
