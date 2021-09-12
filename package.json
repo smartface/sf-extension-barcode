@@ -1,6 +1,6 @@
 {
   "name": "@smartface/extension-barcode",
-  "version": "5.0.0-rc.0",
+  "version": "5.0.0-rc.1",
   "description": "Smartface Extension Barcode",
   "main": "dist/index.js",
   "scripts": {
