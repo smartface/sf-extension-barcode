@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@smartface/native@^4.3.4 || ^4.3.5-beta || ^4.3.5.alpha":
-  version "4.3.5-beta.0"
-  resolved "https://registry.yarnpkg.com/@smartface/native/-/native-4.3.5-beta.0.tgz#ad2e3ef96322585212263c948c4a45e260529a9f"
-  integrity sha512-AZaVcLeTFdMw5lfekp+HEolp992bQxBJWtpapTDjJX8vii7e/NcCKNvr4Vm+85rW7FzbseoawlMnXHFXlR5voA==
+"@smartface/native@^4.3.5-alpha.3":
+  version "4.3.5-alpha.3"
+  resolved "https://registry.yarnpkg.com/@smartface/native/-/native-4.3.5-alpha.3.tgz#a02f3806b5bdb70271d3935948863b3d074c03ae"
+  integrity sha512-uvHd4HExaUIi0LQAozaNqP8mmgxq0+jc0xS5l24SPEoJ2wGRqFeE8qaxwBfVb1EGayluv9pdDy6mRzG/HSakWw==
 
 "@types/node@^16.6.1":
   version "16.9.1"
