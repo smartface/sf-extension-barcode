@@ -1,6 +1,7 @@
 /* globals SF, __SF_Dispatch */
 const { Invocation } = require("@smartface/native/util");
 import ViewGroup from "@smartface/native/ui/viewgroup";
+import { EventEmitter } from "@smartface/native/core/eventemitter";
 
 enum BarcodeFormat {
     AZTEC,
@@ -49,8 +50,10 @@ interface IBarcodeScanner {
     height: number;
 }
 
-
-export class BarcodeScanner implements IBarcodeScanner {
+export class BarcodeScanner extends EventEmitter implements IBarcodeScanner {
+    static Events = {
+        Result: "result"
+    }
     _onResult?: TOnResult;
     _width: number;
     _height: number;
@@ -58,6 +61,7 @@ export class BarcodeScanner implements IBarcodeScanner {
     cameraStarted = false;
 
     constructor(params: IBarcodeScanner) {
+        super();
         if (!params.layout) throw new Error("layout parameter is required");
         if (!params.width) throw new Error("width parameter is required");
         if (!params.height) throw new Error("height parameter is required");

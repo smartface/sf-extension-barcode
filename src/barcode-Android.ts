@@ -1,6 +1,7 @@
 import AndroidConfig from "@smartface/native/util/Android/androidconfig";
 import View from "@smartface/native/ui/view";
 import ViewGroup from "@smartface/native/ui/viewgroup";
+import { EventEmitter } from "@smartface/native/core/eventemitter";
 
 type TOnResult = (options?: {
     barcode?: { text: string; format: string };
@@ -36,7 +37,10 @@ interface IBarcodeScanner {
     height: number;
 }
 
-export class BarcodeScanner implements IBarcodeScanner {
+export class BarcodeScanner extends EventEmitter implements IBarcodeScanner {
+    static Events = {
+        Result: "result"
+    };
     _scannerView?: View;
     _onResult?: TOnResult;
     _width: number = 0;
@@ -46,6 +50,7 @@ export class BarcodeScanner implements IBarcodeScanner {
     cameraStarted = false;
 
     constructor(params: IBarcodeScanner) {
+        super();
         if (!params.layout) {
             throw new Error("layout parameter is required");
         }
