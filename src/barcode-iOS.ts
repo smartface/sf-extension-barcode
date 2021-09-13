@@ -1,8 +1,26 @@
 /* globals SF, __SF_Dispatch */
-const Invocation = require("@smartface/native/util").Invocation;
-import Screen from "@smartface/native/device/screen";
+const { Invocation } = require("@smartface/native/util");
 import ViewGroup from "@smartface/native/ui/viewgroup";
-import Barcode from "./Barcode";
+
+enum BarcodeFormat {
+    AZTEC,
+    CODABAR,
+    CODE_39,
+    CODE_93,
+    CODE_128,
+    DATA_MATRIX,
+    EAN_8,
+    EAN_13,
+    ITF,
+    MAXICODE,
+    PDF_417,
+    QR_CODE,
+    RSS_14,
+    RSS_EXPANDED,
+    UPC_A,
+    UPC_E,
+    UPC_EAN_EXTENSION,
+}
 
 const AVCaptureFocusMode = {
     Locked: 0,
@@ -195,10 +213,10 @@ export class BarcodeScanner implements IBarcodeScanner {
                     );
                     this.onResult &&
                         this.onResult({
-                            barcode: new Barcode({
+                            barcode: {
                                 text,
                                 format,
-                            }),
+                            }
                         });
                 },
                 captureCameraIsReady: function (capture: any) { },
@@ -254,7 +272,7 @@ export class BarcodeScanner implements IBarcodeScanner {
         ]);
     }
 
-    static Format = Barcode.FormatType;
+    static Format = BarcodeFormat;
     static ios = {
         checkPermission(params?: {
             onSuccess: () => void;

@@ -1,12 +1,30 @@
-import Barcode from "./Barcode";
 import AndroidConfig from "@smartface/native/util/Android/androidconfig";
 import View from "@smartface/native/ui/view";
-import Page from "@smartface/native/ui/page";
 import ViewGroup from "@smartface/native/ui/viewgroup";
 
 type TOnResult = (options?: {
     barcode?: { text: string; format: string };
 }) => void;
+
+enum BarcodeFormat {
+    AZTEC = 'AZTEC',
+    CODABAR = 'CODABAR',
+    CODE_39 = 'CODE_39',
+    CODE_93 = 'CODE_93',
+    CODE_128 = 'CODE_128',
+    DATA_MATRIX = 'DATA_MATRIX',
+    EAN_8 = 'EAN_8',
+    EAN_13 = 'EAN_13',
+    ITF = 'ITF',
+    MAXICODE = 'MAXICODE',
+    PDF_417 = 'PDF_417',
+    QR_CODE = 'QR_CODE',
+    RSS_14 = 'RSS_14',
+    RSS_EXPANDED = 'RSS_EXPANDED',
+    UPC_A = 'UPC_A',
+    UPC_E = 'UPC_E',
+    UPC_EAN_EXTENSION = 'UPC_EAN_EXTENSION'
+}
 
 interface IBarcodeScanner {
     onResult?: TOnResult;
@@ -72,10 +90,10 @@ export class BarcodeScanner implements IBarcodeScanner {
             handleResult: (rawResult: any) => {
               this._onResult &&
                 this._onResult({
-                  barcode: new Barcode({
+                  barcode: {
                     text: rawResult.getText(),
                     format: rawResult.getBarcodeFormat().toString(),
-                  }),
+                  },
                 });
             },
         });
@@ -97,6 +115,6 @@ export class BarcodeScanner implements IBarcodeScanner {
 
     toString = () => "BarcodeScanner";
     
-    static Format = Barcode.FormatType;
+    static Format = BarcodeFormat;
     static ios = {};
 }
