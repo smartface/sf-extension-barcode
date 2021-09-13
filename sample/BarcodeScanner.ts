@@ -9,32 +9,33 @@ import AlertView from "@smartface/native/ui/alertview";
 
 export class BarcodeScanner {
   listeners: (() => void)[] = [];
-  barcodeScanner: SFBarcodeScanner;
+  barcodeScanner: InstanceType<typeof SFBarcodeScanner>;
   constructor(page: Page) {
     this.barcodeScanner = new SFBarcodeScanner({
       layout: page.layout,
       width: Screen.width,
-      height: Screen.height,
-      onResult: (e) => {
-        this.hide();
-        this.listeners.forEach((f) => f.call(null, e.barcode.text));
-        this.listeners = [];
-        //@ts-ignore
-        page.router.dismiss();
-      },
+      height: Screen.height
     });
+
+    this.barcodeScanner.on(SFBarcodeScanner.Events.Result, (e) => {
+      this.hide();
+      this.listeners.forEach((f) => f.call(null, e.barcode.text));
+      this.listeners = [];
+      //@ts-ignore
+      page.router.dismiss();
+    })
   }
+
   show() {
     if (System.OS === System.OSType.IOS) {
-      SFBarcodeScanner.ios.checkPermission({
-        onSuccess: () => this.showScanPage(),
-        onFailure: async () => {
+      SFBarcodeScanner.ios.checkPermission()
+        .then(() => this.showScanPage())
+        .catch(async () => {
           await this.askUserForPermission();
           Application.call({
             uriScheme: `app-settings:root=LOCATION_SERVICES`,
           });
-        },
-      });
+      })
     } else {
       const CAMERA_PERMISSION_CODE = 1002;
       if (

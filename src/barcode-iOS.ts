@@ -1,7 +1,9 @@
+ 
 /* globals SF, __SF_Dispatch */
 const { Invocation } = require("@smartface/native/util");
 import ViewGroup from "@smartface/native/ui/viewgroup";
 import { EventEmitter } from "@smartface/native/core/eventemitter";
+import { IBarcodeScanner } from "types/IBarcode";
 
 enum BarcodeFormat {
     AZTEC,
@@ -36,25 +38,10 @@ const AVAuthorizationStatus = {
     Authorized: 3,
 };
 
-type TOnResult = (options?: {
-    barcode?: { text: string; format: string };
-}) => void;
-
-interface IBarcodeScanner {
-    onResult?: TOnResult;
-    /**
-     * Typically, page.layout is used
-     */
-    layout: ViewGroup;
-    width: number;
-    height: number;
-}
-
 export class BarcodeScanner extends EventEmitter implements IBarcodeScanner {
     static Events = {
         Result: "result"
     }
-    _onResult?: TOnResult;
     _width: number;
     _height: number;
     _layout: ViewGroup;
@@ -68,14 +55,6 @@ export class BarcodeScanner extends EventEmitter implements IBarcodeScanner {
         this._layout = params.layout;
         this._width = params.width;
         this._height = params.height;
-    }
-
-    get onResult() {
-        return this._onResult;
-    }
-
-    set onResult(value) {
-        this._onResult = value;
     }
 
     get layout() {
@@ -215,13 +194,12 @@ export class BarcodeScanner extends EventEmitter implements IBarcodeScanner {
                         [],
                         "int"
                     );
-                    this.onResult &&
-                        this.onResult({
-                            barcode: {
-                                text,
-                                format,
-                            }
-                        });
+                    this.emit(BarcodeScanner.Events.Result, [{
+                        barcode: {
+                            text,
+                            format
+                        }
+                    }])
                 },
                 captureCameraIsReady: function (capture: any) { },
                 captureSizeWidthHeight: function (capture: any, width: number, height: number) { },
@@ -278,44 +256,41 @@ export class BarcodeScanner extends EventEmitter implements IBarcodeScanner {
 
     static Format = BarcodeFormat;
     static ios = {
-        checkPermission(params?: {
-            onSuccess: () => void;
-            onFailure: () => void;
-        }): void {
-            let onSuccess = typeof params?.onSuccess === "function" ? params?.onSuccess : () => { };
-            let onFailure = typeof params?.onFailure === "function" ? params?.onFailure : () => { };
-            let argMediaType = new Invocation.Argument({
-                type: "NSString",
-                value: "vide",
-            });
-            let authStatus = Invocation.invokeClassMethod(
-                "AVCaptureDevice",
-                "authorizationStatusForMediaType:",
-                [argMediaType],
-                "NSInteger"
-            );
-            if (authStatus == AVAuthorizationStatus.Authorized) {
-                onSuccess();
-            } else if (authStatus == AVAuthorizationStatus.Denied) {
-                onFailure();
-            } else if (authStatus == AVAuthorizationStatus.Restricted) {
-                onFailure();
-            } else if (authStatus == AVAuthorizationStatus.NotDetermined) {
-                let argCompHandler = new Invocation.Argument({
-                    type: "BoolBlock",
-                    value: (granted: any) => {
-                        //@ts-ignore
-                        __SF_Dispatch.mainAsync(() => (granted ? onSuccess() : onFailure()));
-                    },
+        checkPermission(): Promise<void> {
+            return new Promise((resolve, reject) => {
+                let argMediaType = new Invocation.Argument({
+                    type: "NSString",
+                    value: "vide",
                 });
-                Invocation.invokeClassMethod(
+                let authStatus = Invocation.invokeClassMethod(
                     "AVCaptureDevice",
-                    "requestAccessForMediaType:completionHandler:",
-                    [argMediaType, argCompHandler]
+                    "authorizationStatusForMediaType:",
+                    [argMediaType],
+                    "NSInteger"
                 );
-            } else {
-                onFailure();
-            }
+                if (authStatus == AVAuthorizationStatus.Authorized) {
+                    resolve();
+                } else if (authStatus == AVAuthorizationStatus.Denied) {
+                    reject();
+                } else if (authStatus == AVAuthorizationStatus.Restricted) {
+                    reject();
+                } else if (authStatus == AVAuthorizationStatus.NotDetermined) {
+                    let argCompHandler = new Invocation.Argument({
+                        type: "BoolBlock",
+                        value: (granted: any) => {
+                            //@ts-ignore
+                            __SF_Dispatch.mainAsync(() => (granted ? resolve() : reject()));
+                        },
+                    });
+                    Invocation.invokeClassMethod(
+                        "AVCaptureDevice",
+                        "requestAccessForMediaType:completionHandler:",
+                        [argMediaType, argCompHandler]
+                    );
+                } else {
+                    reject();
+                }
+            })
         }
     }
 }

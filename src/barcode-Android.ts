@@ -2,10 +2,7 @@ import AndroidConfig from "@smartface/native/util/Android/androidconfig";
 import View from "@smartface/native/ui/view";
 import ViewGroup from "@smartface/native/ui/viewgroup";
 import { EventEmitter } from "@smartface/native/core/eventemitter";
-
-type TOnResult = (options?: {
-    barcode?: { text: string; format: string };
-}) => void;
+import { IBarcodeScanner } from "types/IBarcode";
 
 enum BarcodeFormat {
     AZTEC = 'AZTEC',
@@ -27,22 +24,11 @@ enum BarcodeFormat {
     UPC_EAN_EXTENSION = 'UPC_EAN_EXTENSION'
 }
 
-interface IBarcodeScanner {
-    onResult?: TOnResult;
-    /**
-     * Typically, page.layout is used
-     */
-    layout: ViewGroup;
-    width: number;
-    height: number;
-}
-
 export class BarcodeScanner extends EventEmitter implements IBarcodeScanner {
     static Events = {
         Result: "result"
     };
     _scannerView?: View;
-    _onResult?: TOnResult;
     _width: number = 0;
     _height: number = 0;
     _layout: ViewGroup;
@@ -55,18 +41,9 @@ export class BarcodeScanner extends EventEmitter implements IBarcodeScanner {
             throw new Error("layout parameter is required");
         }
         this._layout = params.layout;
-        this._onResult = params.onResult;
     }
     width: number = 0;
     height: number = 0;
-
-    get onResult() {
-        return this._onResult;
-    }
-
-    set onResult(value) {
-        this._onResult = value;
-    }
 
     get layout(): ViewGroup {
         return this._layout;
@@ -93,13 +70,12 @@ export class BarcodeScanner extends EventEmitter implements IBarcodeScanner {
         );
         let resultHandler = ZXingScannerView.ResultHandler.implement({
             handleResult: (rawResult: any) => {
-              this._onResult &&
-                this._onResult({
-                  barcode: {
-                    text: rawResult.getText(),
-                    format: rawResult.getBarcodeFormat().toString(),
-                  },
-                });
+                this.emit(BarcodeScanner.Events.Result, [{
+                    barcode: {
+                        text: rawResult.getText(),
+                        format: rawResult.getBarcodeFormat().toString()
+                    }
+                }])
             },
         });
         //@ts-ignore
@@ -119,7 +95,8 @@ export class BarcodeScanner extends EventEmitter implements IBarcodeScanner {
     }
 
     toString = () => "BarcodeScanner";
-    
+
     static Format = BarcodeFormat;
     static ios = {};
 }
+
