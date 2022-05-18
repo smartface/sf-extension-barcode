@@ -1,3 +1,5 @@
+# NOTE! THIS MODULE HAVE BEEN DEPRECATED ABOVE NATIVE VERSIONS 5.0.0 AND ABOVE! PLEASE USE THE NATIVE COUNTERPART!
+
 # Barcode Scanner Extension
 [![NPM](https://img.shields.io/npm/v/@smartface/extension-barcode?style=flat-square)](https://www.npmjs.com/package/@smartface/extension-barcode)
 [![Twitter: @Smartface_io](https://img.shields.io/badge/contact-@Smartface_io-blue.svg?style=flat)](https://twitter.com/smartface_io)
